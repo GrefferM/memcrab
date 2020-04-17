@@ -10,9 +10,9 @@ import {
 } from '@/actionTypes/typeMatrix'
 
 const initialState = {
-    M: {},
-    N: {},
-    X: {}
+    M: 0,
+    N: 0,
+    X: 0
 }
 
 type Action = iMAction & iNAction & iXAction

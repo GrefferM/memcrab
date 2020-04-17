@@ -1,0 +1,32 @@
+.message {
+    height: 40px;
+    padding: 0 1rem;
+    margin: .5rem 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: #611a15;
+    font-weight: 600;
+    background-color: #efdadf;
+    border-radius: 4px;
+}
+
+.message__inf {
+    display: flex;
+    align-items: center;
+}
+
+.text {
+    padding: 0 .5rem;
+}
+
+.close {
+    cursor: pointer;
+
+    &:hover {
+        color: #ec5b4a;
+        transition: color .2s ease-in-out;
+    }
+}
