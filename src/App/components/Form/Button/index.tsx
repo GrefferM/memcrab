@@ -11,11 +11,12 @@ export enum TypeButton {
 interface iProps {
     text: string
     type: TypeButton
+    onClick?: Function
 }
 const Button: React.FC<iProps> = (props: iProps) => {
     return (
         //@ts-ignore
-        <button className={`${classes.btn} ${classes.btn__primary}`} type={props.type}>{props.text}</button>
+        <button onClick={props.onClick} className={`${classes.btn} ${classes.btn__primary}`} type={props.type}>{props.text}</button>
     )
 }
 

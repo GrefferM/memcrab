@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 
 import classes from './index.module.scss'
 // Interface indicates
@@ -11,9 +11,9 @@ interface iProps {
 }
 const FormControl: React.FC<iProps> = (props: iProps) => {
     return (
-        <div className={classes.form__group}>
+        <div className='form__group'>
             <label className={classes.label} htmlFor={`exampleInput${props.name}`} aria-describedby={`${props.name.toLowerCase()}Help`}>{props.label}</label>
-            <input type={props.type} id={`exampleInput${props.name}`} className={classes.form__control} placeholder={props.placeholder}/>
+            <input name={props.name} type={props.type} id={`exampleInput${props.name}`} className={classes.form__control} placeholder={props.placeholder}/>
         </div>
     )
 }
