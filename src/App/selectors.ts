@@ -1,0 +1,1 @@
+import iRootState from '@/interfaces/iRootState'
