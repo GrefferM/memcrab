@@ -6,7 +6,8 @@ import classes from './index.module.scss'
 import iRootState from '@/interfaces/iRootState'
 import { iGridMatrix } from '@/interfaces/iMatrix'
 import {
-    actionGridMatrix
+    actionGridMatrix,
+    actionInitGridMatrix
 } from '@/actions/actionMatrix'
 import { getGridMatrix } from '@/selectors'
 
@@ -15,7 +16,8 @@ const mapState = (state: iRootState) => ({
 })
 
 const mapDispatch = {
-    actionGridMatrix
+    actionGridMatrix,
+    actionInitGridMatrix
 }
 
 const connector = connect(
@@ -32,59 +34,76 @@ interface iProps {
     N: number
     X: number
 }
-const randomNamber = (min: number, max: number) => {
+const randomNumber = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
-const Col = (count: number, index: number, grid: iGridMatrix[]) => {
-    let number
-    let gridTmp
-
-    const type = new Set<JSX.Element>()
-    for (let j = 0; j < count; j++) {
-        number = randomNamber(100, 1000)
-        type.add(<td key={j} className={classes.col}>{number}</td>)
-
-        gridTmp = { id: index, ranNumber: number }
-        grid.push(gridTmp)
-
-        index++
-    }
-    return type
-}
-const Row = (M: number, N: number, setGridState: Function, setTypeState: Function) => {
+const СreateGrid = (M: number, N: number, setGridState: Function) => {
     let index = 1
     const grid: iGridMatrix[] = []
-    const type = new Set<JSX.Element>()
     for (let i = 0; i < M; i++) {
-        type.add(<tr key={i}>{Col(N, index, grid)}</tr>)
+        for (let j = 0; j < N; j++) {
+            grid.push({ id: index++, ranNumber: randomNumber(100, 1000) })
+        }
         index += N
     }
     setGridState(grid)
-    setTypeState(type)
+}
+const Col = (count: number, index: number, gridState: iGridMatrix[]) => {
+    try {
+        const type = new Set<JSX.Element>()
+        for (let j = 0; j < count; j++) {
+            type.add(<td key={j} className={classes.col}>{gridState[index].ranNumber}</td>)
+            index++
+        }
+        return type
+    } catch (error) { }
+}
+const Row = (M: number, N: number, gridState: iGridMatrix[]) => {
+    let index = 0
+    const type = new Set<JSX.Element>()
+    for (let i = 0; i < M; i++) {
+        type.add(<tr key={i}>{Col(N, index, gridState)}</tr>)
+        index += N
+    }
+
+    return type
 }
 const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
     const [gridState, setGridState] = useState<iGridMatrix[]>()
-    const [typeState, setTypeState] = useState()
 
-    const isGrid = () => {
-        if (gridState === undefined) {
-            Row(props.M, props.N, setGridState, setTypeState)
-        }
-        if (typeState !== undefined) {
-            return typeState
-        }
-        return <></>
-    }
+    // We check if localStorage has a previously saved grid
     useEffect(() => {
-        if (gridState !== undefined) {
+        if (gridState === undefined) {
+            if (props.gridMatrix === undefined) {
+                if (localStorage.getItem('GridMatrix')) {
+                    props.actionInitGridMatrix()
+                } else {
+                    СreateGrid(props.M, props.N, setGridState)
+                }
+            } else if (props.gridMatrix) {
+                setGridState(props.gridMatrix)
+            }
+        } else if (props.gridMatrix === undefined) {
             props.actionGridMatrix(gridState)
         }
-    }, [gridState])
+    }, [gridState, props.gridMatrix])
 
+    // When changing col, row do a rewrite of the grid
+    useEffect(() => {
+        СreateGrid(props.M, props.N, setGridState)
+    }, [props.M, props.N])
+
+    // When mesh changes, delete the old mesh record, send the event to redux
+    useEffect(() => {
+        if (gridState?.length !== props.gridMatrix?.length) {
+            localStorage.removeItem('GridMatrix')
+            gridState && props.actionGridMatrix(gridState)
+        }
+    }, [gridState?.length])
     return (
         <table className={classes.table}>
             <tbody>
-                {props.M && props.N && isGrid()}
+                {props.M && props.N && gridState && Row(props.M, props.N, props.gridMatrix)}
             </tbody>
         </table>
     )

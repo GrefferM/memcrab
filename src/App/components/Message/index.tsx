@@ -13,14 +13,14 @@ const Message: React.FC<iProps> = (props: iProps) => {
         {
             open ? <div className={classes.message}>
                 <div className={classes.message__inf}>
-                    <i className="fas fa-exclamation-circle"></i>
+                    <div>&#10071;</div>
                     <div className={classes.text}>{props.message}</div>
                 </div>
                 <div className={classes.close} onClick={() => {
                     setOpen(false)
                     props.clearMessage(props.message)
                 }}>
-                    <i className="far fa-times-circle"></i>
+                    <div>&#10006;</div>
                 </div>
             </div> : <></>
         }

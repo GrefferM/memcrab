@@ -28,6 +28,10 @@ export const ACTION_GRID_MATRIX_START   = 'ACTION_GRID_MATRIX_START'
 export const ACTION_GRID_MATRIX_SUCCESS = 'ACTION_GRID_MATRIX_SUCCESS'
 export const ACTION_GRID_MATRIX_FAILURE = 'ACTION_GRID_MATRIX_FAILURE'
 
+export const ACTION_INIT_GRID_MATRIX_START   = 'ACTION_INIT_GRID_MATRIX_START'
+export const ACTION_INIT_GRID_MATRIX_SUCCESS = 'ACTION_INIT_GRID_MATRIX_SUCCESS'
+export const ACTION_INIT_GRID_MATRIX_FAILURE = 'ACTION_INIT_GRID_MATRIX_FAILURE'
+
 export interface iMAction {
     type: typeof ACTION_M_SUCCESS
     payload: number
@@ -60,5 +64,10 @@ export interface iInitXAction {
 
 export interface iGridMatrixAction {
     type: typeof ACTION_GRID_MATRIX_SUCCESS
+    payload: iGridMatrix
+}
+
+export interface iInitGridMatrixAction {
+    type: typeof ACTION_INIT_GRID_MATRIX_SUCCESS
     payload: iGridMatrix
 }
