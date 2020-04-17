@@ -12,7 +12,10 @@ import { getMatrix } from '@/selectors'
 import {
     actionM,
     actionN,
-    actionX
+    actionX,
+    actionInitM,
+    actionInitN,
+    actionInitX
 } from '@/actions/actionMatrix'
 import classes from './index.module.scss'
 
@@ -23,7 +26,10 @@ const mapState = (state: iRootState) => ({
 const mapDispatch = {
     actionM,
     actionN,
-    actionX
+    actionX,
+    actionInitM,
+    actionInitN,
+    actionInitX
 }
 
 const connector = connect(
@@ -45,7 +51,17 @@ const Main: React.FC<Props> = (props: Props) => {
         props.actionX(+X.value)
     }
 
-    useEffect(() => { }, [props.matrix])
+    useEffect(() => {
+        if (props.matrix.M === 0) {
+            props.actionInitM()
+        }
+        if (props.matrix.N === 0) {
+            props.actionInitN()
+        }
+        if (props.matrix.X === 0) {
+            props.actionInitX()
+        }
+    }, [props.matrix])
     // Check if this message is in the Set collection.
     const isMessageSkipped = (activeMessage: string) => {
         return message.has(activeMessage)

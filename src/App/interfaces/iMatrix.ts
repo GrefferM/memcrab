@@ -3,3 +3,8 @@ export interface iMatrix {
     N: number
     X: number
 }
+
+export interface iGridMatrix {
+    id: number
+    ranNumber: number
+}
