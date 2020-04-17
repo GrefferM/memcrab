@@ -1,0 +1,42 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 80px;
+        margin: 0 1rem;
+
+        animation-duration: 4s;
+        animation-name: spiner;
+        animation-iteration-count: infinite;
+    }
+}
+
+.title {
+    text-align: center;
+
+    color: #26acba;
+    font-size: 3rem;
+    font-weight: 600;
+    font-family: 'Amiri', serif;
+}
+
+@keyframes spiner {
+    from {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+}

@@ -10,7 +10,7 @@ import { createBrowserHistory } from 'history'
 import createRootReducer from '@/reducers'
 import routes from '@/routes'
 
-import './index.css'
+import '../public/index.css'
 
 const history = createBrowserHistory()
 const middlewares = [thunk, routerMiddleware(history)]

@@ -46,7 +46,7 @@ module.exports = {
     plugins: [
         new HTMLPlugin({
             filename: 'index.html',
-            template: path.resolve(__dirname, './src/index.html')
+            template: path.resolve(__dirname, './public/index.html')
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
