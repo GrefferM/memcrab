@@ -37,7 +37,7 @@ interface iProps {
 const randomNumber = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
-const СreateGrid = (M: number, N: number, setGridState: Function) => {
+const СreateGrid = (M: number, N: number) => {
     let index = 1
     const grid: iGridMatrix[] = []
     for (let i = 0; i < M; i++) {
@@ -46,7 +46,7 @@ const СreateGrid = (M: number, N: number, setGridState: Function) => {
         }
         index += N
     }
-    setGridState(grid)
+    return grid
 }
 const Col = (count: number, index: number, gridState: iGridMatrix[]) => {
     try {
@@ -69,41 +69,27 @@ const Row = (M: number, N: number, gridState: iGridMatrix[]) => {
     return type
 }
 const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
-    const [gridState, setGridState] = useState<iGridMatrix[]>()
-
     // We check if localStorage has a previously saved grid
     useEffect(() => {
-        if (gridState === undefined) {
-            if (props.gridMatrix === undefined) {
-                if (localStorage.getItem('GridMatrix')) {
-                    props.actionInitGridMatrix()
-                } else {
-                    СreateGrid(props.M, props.N, setGridState)
-                }
-            } else if (props.gridMatrix) {
-                setGridState(props.gridMatrix)
+        if (props.gridMatrix === undefined) {
+            if (localStorage.getItem('GridMatrix')) {
+                props.actionInitGridMatrix()
+            } else {
+                props.actionGridMatrix(СreateGrid(props.M, props.N))
             }
-        } else if (props.gridMatrix === undefined) {
-            props.actionGridMatrix(gridState)
         }
-    }, [gridState, props.gridMatrix])
 
+    }, [props.gridMatrix])
     // When changing col, row do a rewrite of the grid
     useEffect(() => {
-        СreateGrid(props.M, props.N, setGridState)
-    }, [props.M, props.N])
-
-    // When mesh changes, delete the old mesh record, send the event to redux
-    useEffect(() => {
-        if (gridState?.length !== props.gridMatrix?.length) {
-            localStorage.removeItem('GridMatrix')
-            gridState && props.actionGridMatrix(gridState)
+        if (props.gridMatrix !== undefined) {
+            props.actionGridMatrix(СreateGrid(props.M, props.N))
         }
-    }, [gridState?.length])
+    }, [props.M, props.N])
     return (
         <table className={classes.table}>
             <tbody>
-                {props.M && props.N && gridState && Row(props.M, props.N, props.gridMatrix)}
+                {props.M && props.N && Row(props.M, props.N, props.gridMatrix)}
             </tbody>
         </table>
     )
