@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormEvent } from 'react'
+import React, { useEffect, useState, useRef, FormEvent } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
 import FormControl from '@/components/Form/FormControl'
@@ -42,6 +42,7 @@ const connector = connect(
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux
 const Main: React.FC<Props> = (props: Props) => {
+    const maxWidth = useRef(null)
     const [message, setMessage] = useState(new Set<string>())
     const [matrix, setMatrix] = useState<iMatrix>()
     const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -49,9 +50,9 @@ const Main: React.FC<Props> = (props: Props) => {
         //@ts-ignore
         const { M, N, X } = event?.target
 
-        props.actionM(+M.value)
-        props.actionN(+N.value)
+        props.actionX(+M.value)
         props.actionX(+X.value)
+        props.actionN(+N.value)
     }
 
     useEffect(() => {
@@ -111,11 +112,15 @@ const Main: React.FC<Props> = (props: Props) => {
     }
 
     return (
-        <>
+        <div ref={maxWidth}>
             <div className={classes.header}>
-                <img src={require('./react.png').default} alt="" />
-                <div className={classes.title}>Test Job ✌️ Memcrab</div>
-                <img src={require('./react.png').default} alt="" />
+                <div>
+                    <img src={require('./react.png').default} alt="" />
+                </div>
+                <div className={classes.title}>Test Job ✌ Memcrab</div>
+                <div>
+                    <img src={require('./react.png').default} alt="" />
+                </div>
             </div>
             {message && Array.from(message).map((value: string, index: number) =>
                 <div key={index}><Message message={value} clearMessage={handleDeleteMessage} /></div>)
@@ -129,7 +134,7 @@ const Main: React.FC<Props> = (props: Props) => {
                 </div>
             </form>
             {showTable(props.matrix)}
-        </>
+        </div>
     )
 }
 
