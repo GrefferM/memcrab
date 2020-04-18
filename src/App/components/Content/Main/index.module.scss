@@ -3,19 +3,28 @@
     justify-content: center;
     align-items: center;
 
-    div {
-        width: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    flex-wrap: wrap;
+}
 
-        img {
-            width: 80px;
+.image__block {
+    padding: 20px;
 
-            animation-duration: 4s;
-            animation-name: spiner;
-            animation-iteration-count: infinite;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 80px;
+
+        animation-duration: 4s;
+        animation-name: spiner;
+        animation-iteration-count: infinite;
+    }
+}
+
+.d_md_none {
+    @media (max-width: 767px) {
+        display: none;
     }
 }
 

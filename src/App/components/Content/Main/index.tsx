@@ -114,11 +114,11 @@ const Main: React.FC<Props> = (props: Props) => {
     return (
         <div ref={maxWidth}>
             <div className={classes.header}>
-                <div>
+                <div className={classes.image__block}>
                     <img src={require('./react.png').default} alt="" />
                 </div>
                 <div className={classes.title}>Test Job ✌ Memcrab</div>
-                <div>
+                <div className={`${classes.image__block} ${classes.d_md_none}`}>
                     <img src={require('./react.png').default} alt="" />
                 </div>
             </div>
