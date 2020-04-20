@@ -87,7 +87,7 @@ const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
         }
     }, [props.M, props.N])
     return (
-        <table className={classes.table}>
+        <table>
             <tbody>
                 {props.M && props.N && Row(props.M, props.N, props.gridMatrix)}
             </tbody>

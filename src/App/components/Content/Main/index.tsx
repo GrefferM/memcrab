@@ -5,6 +5,7 @@ import FormControl from '@/components/Form/FormControl'
 import Button, { TypeButton } from '@/components/Form/Button'
 import Table from '@/components/Table'
 import Message from '@/components/Message'
+import Info from '@/components/Info'
 
 import iRootState from '@/interfaces/iRootState'
 import { iMatrix } from '@/interfaces/iMatrix'
@@ -50,7 +51,7 @@ const Main: React.FC<Props> = (props: Props) => {
         //@ts-ignore
         const { M, N, X } = event?.target
 
-        props.actionX(+M.value)
+        props.actionM(+M.value)
         props.actionX(+X.value)
         props.actionN(+N.value)
     }
@@ -107,7 +108,7 @@ const Main: React.FC<Props> = (props: Props) => {
         }
 
         if (message.size === 0) {
-            return <Table M={props.matrix.M} N={props.matrix.N} X={props.matrix.X} />
+            return <Info><Table M={props.matrix.M} N={props.matrix.N} X={props.matrix.X} /></Info>
         }
     }
 

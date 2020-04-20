@@ -1,0 +1,29 @@
+.d_flex {
+    display: flex;
+    justify-content: center;
+}
+
+.flex_column {
+    flex-direction: column;
+}
+
+.m_auto {
+    margin: 0 auto;
+}
+
+.col {
+    cursor: pointer;
+    color: #667b84;
+    font-weight: 600;
+    text-align: center;
+
+    width: 70px;
+    height: 35px;
+
+    background-color: #efdadf;
+    transition: background-color .1s ease-in-out;
+
+    &:hover {
+        background-color: #e4e4e4;
+    }
+}
