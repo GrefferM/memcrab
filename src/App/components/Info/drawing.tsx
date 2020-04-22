@@ -3,11 +3,11 @@ import { iGridMatrix } from '@/interfaces/iMatrix'
 
 import classes from './index.module.scss'
 
-export const infoHorizon = (grid: iGridMatrix[], step: number) => {
-    const sum: number[] = []
+export const infoSide = (grid: iGridMatrix[] | undefined, step: number) => {
     if (grid) {
         let tmp = 0
-        const _step = Object.values(grid).length / step
+        const sum: number[] = []
+        const _step = Math.floor(Object.values(grid).length / step)
         for (let i = 0, j = 0; i < Object.values(grid).length; i++) {
             if (j === _step) {
                 sum.push(tmp)
@@ -18,20 +18,22 @@ export const infoHorizon = (grid: iGridMatrix[], step: number) => {
             j++
         }
         sum.push(tmp)
+        return sum
     }
-    return sum
+    return []
 }
-export const infoSide = (grid: iGridMatrix[], step: number) => {
-    const sum: number[] = new Array(step).fill(0)
+export const infoHorizont = (grid: iGridMatrix[] | undefined, step: number) => {
     if (grid) {
+        const sum: number[] = new Array(step).fill(0)
         for (let i = 0, j = 0; i < Object.values(grid).length; i++, j++) {
             if (j === step) {
                 j = 0
             }
             sum[j] += grid[i].ranNumber
         }
+        return sum
     }
-    return sum
+    return []
 }
 const Col = (id: string, count: number, index: number, grid: number[], handleMouseOver?: Function, handleMouseLeave?: Function) => {
     try {

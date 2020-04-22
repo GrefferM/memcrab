@@ -10,7 +10,7 @@ import {
     actionMatrixColAction
 } from '@/actions/actionMatrix'
 import { getGridMatrix, getActionCol } from '@/selectors'
-import { bypass, СreateGrid, drawingGrid } from './drawing'
+import { bypass, СreateGrid, ControlGrid, drawingGrid } from './drawing'
 
 const mapState = (state: iRootState) => ({
     gridMatrix: getGridMatrix(state),
@@ -49,7 +49,6 @@ const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
                 props.actionGridMatrix(СreateGrid(props.M, props.N))
             }
         }
-
     }, [props.gridMatrix])
     useEffect(() => {
         if (props.actionCol !== 0 && props.actionCol !== null && props.gridMatrix) {
@@ -69,10 +68,10 @@ const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
     // When changing col, row do a rewrite of the grid
     useEffect(() => {
         if (props.gridMatrix !== undefined) {
-            props.actionGridMatrix(СreateGrid(props.M, props.N))
+            props.actionGridMatrix(ControlGrid(props.gridMatrix, props.M, props.N))
         }
     }, [props.M, props.N])
-    const ColUp = (isId: boolean, value: iGridMatrix) => {
+    const colUp = (isId: boolean, value: iGridMatrix) => {
         if (isId) {
             ++value.ranNumber
         }
@@ -82,7 +81,7 @@ const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
     const handleCol = (event: MouseEvent) => {
         //@ts-ignore
         const id = parseInt(event?.target.id.replace(/\D/g, ''))
-        props.actionGridMatrixColUp(props.gridMatrix.map((value) => ColUp(value.id === id, value)))
+        props.actionGridMatrixColUp(props.gridMatrix.map((value) => colUp(value.id === id, value)))
         const active: number[] = []
         try {
             bypass(id, props.M, props.N, props.X, active)

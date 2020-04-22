@@ -348,6 +348,27 @@ export const СreateGrid = (M: number, N: number) => {
     }
     return grid
 }
+export const ControlGrid = (grid: iGridMatrix[], M: number, N: number) => {
+    try {
+        if (Object.values(grid).length < M * N) {
+            const _grid: iGridMatrix[] = []
+            let index = grid[Object.values(grid).length - 1].id
+            for (let i = 0; i < Object.values(grid).length; i++) {
+                _grid.push(grid[i])
+            }
+            for (let i = 0; i < M * N - Object.values(grid).length; i++) {
+                _grid.push({ id: ++index, ranNumber: randomNumber(100, 1000), active: false, interest: false, interestNumber: 0 })
+            }
+            return _grid
+        } else {
+            const _grid: iGridMatrix[] = []
+            for (let i = 0; i < M * N; i++) {
+                _grid.push(grid[i])
+            }
+            return _grid
+        }
+    } catch (error) { return [] }
+}
 const styleInterestCol = (interest: number) => {
     return { background: `linear-gradient(0deg, rgba(151,235,173,1) ${interest}%, rgba(232,244,253,1) ${interest}%)` }
 }
