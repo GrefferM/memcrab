@@ -31,7 +31,11 @@ import {
 
     ACTION_INIT_GRID_MATRIX_START,
     ACTION_INIT_GRID_MATRIX_SUCCESS,
-    ACTION_INIT_GRID_MATRIX_FAILURE
+    ACTION_INIT_GRID_MATRIX_FAILURE,
+
+    ACTION_GRID_MATRIX_COL_UP_START,
+    ACTION_GRID_MATRIX_COL_UP_SUCCESS,
+    ACTION_GRID_MATRIX_COL_UP_FAILURE
 } from '@/actionTypes/typeMatrix'
 import { iGridMatrix } from '@/interfaces/iMatrix'
 
@@ -206,6 +210,23 @@ export const actionInitGridMatrix = () => async (dispatch: Dispatch) => {
     } catch (error) {
         dispatch({
             type: ACTION_INIT_GRID_MATRIX_FAILURE,
+            error
+        })
+    }
+}
+
+export const actionGridMatrixColUp = (value: iGridMatrix[]) => async (dispatch: Dispatch) => {
+    dispatch({ type: ACTION_GRID_MATRIX_COL_UP_START })
+
+    try {
+        localStorage.setItem('GridMatrix', JSON.stringify(value))
+        dispatch({
+            type: ACTION_GRID_MATRIX_COL_UP_SUCCESS,
+            payload: value,
+        })
+    } catch (error) {
+        dispatch({
+            type: ACTION_GRID_MATRIX_COL_UP_FAILURE,
             error
         })
     }

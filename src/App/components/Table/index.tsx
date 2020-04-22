@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, MouseEvent } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-
-import classes from './index.module.scss'
 
 import iRootState from '@/interfaces/iRootState'
 import { iGridMatrix } from '@/interfaces/iMatrix'
 import {
     actionGridMatrix,
-    actionInitGridMatrix
+    actionInitGridMatrix,
+    actionGridMatrixColUp
 } from '@/actions/actionMatrix'
 import { getGridMatrix } from '@/selectors'
+import { bypass, СreateGrid, drawingGrid } from './drawing'
 
 const mapState = (state: iRootState) => ({
     gridMatrix: getGridMatrix(state)
@@ -17,7 +17,8 @@ const mapState = (state: iRootState) => ({
 
 const mapDispatch = {
     actionGridMatrix,
-    actionInitGridMatrix
+    actionInitGridMatrix,
+    actionGridMatrixColUp
 }
 
 const connector = connect(
@@ -34,40 +35,7 @@ interface iProps {
     N: number
     X: number
 }
-const randomNumber = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min
-}
-const СreateGrid = (M: number, N: number) => {
-    let index = 1
-    const grid: iGridMatrix[] = []
-    for (let i = 0; i < M; i++) {
-        for (let j = 0; j < N; j++) {
-            grid.push({ id: index++, ranNumber: randomNumber(100, 1000) })
-        }
-        index += N
-    }
-    return grid
-}
-const Col = (count: number, index: number, gridState: iGridMatrix[]) => {
-    try {
-        const type = new Set<JSX.Element>()
-        for (let j = 0; j < count; j++) {
-            type.add(<td key={j} className={classes.col}>{gridState[index].ranNumber}</td>)
-            index++
-        }
-        return type
-    } catch (error) { }
-}
-const Row = (M: number, N: number, gridState: iGridMatrix[]) => {
-    let index = 0
-    const type = new Set<JSX.Element>()
-    for (let i = 0; i < M; i++) {
-        type.add(<tr key={i}>{Col(N, index, gridState)}</tr>)
-        index += N
-    }
 
-    return type
-}
 const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
     // We check if localStorage has a previously saved grid
     useEffect(() => {
@@ -86,10 +54,34 @@ const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
             props.actionGridMatrix(СreateGrid(props.M, props.N))
         }
     }, [props.M, props.N])
+    const ColUp = (isId: boolean, value: iGridMatrix) => {
+        if (isId) {
+            ++value.ranNumber
+        }
+        return value
+    }
+
+    const handleCol = (event: MouseEvent) => {
+        //@ts-ignore
+        const id = parseInt(event?.target.id.replace(/\D/g, ''))
+        props.actionGridMatrixColUp(props.gridMatrix.map((value) => ColUp(value.id === id, value)))
+        const active: number[] = []
+        try {
+            bypass(id, props.M, props.N, props.X, active)
+            for (let i = 0; i < Object.values(props.gridMatrix).length; i++) {
+                props.gridMatrix[i].active = false
+            }
+            for (let i = 0; i < active.length; i++) {
+                props.gridMatrix[active[i] - 1].active = true
+            }
+
+            localStorage.setItem('GridMatrix', JSON.stringify(props.gridMatrix))
+        } catch (error) { }
+    }
     return (
         <table>
             <tbody>
-                {props.M && props.N && Row(props.M, props.N, props.gridMatrix)}
+                {props.M && props.N && drawingGrid(props.M, props.N, props.gridMatrix, handleCol)}
             </tbody>
         </table>
     )

@@ -7,4 +7,5 @@ export interface iMatrix {
 export interface iGridMatrix {
     id: number
     ranNumber: number
+    active: boolean
 }

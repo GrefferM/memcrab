@@ -4,7 +4,7 @@
     font-weight: 600;
     text-align: center;
 
-    width: 70px;
+    width: 100px;
     height: 35px;
 
     background-color: #e8f4fd;
@@ -13,4 +13,8 @@
     &:hover {
         background-color: #e4e4e4;
     }
+}
+
+.active {
+    background-color: #faface;
 }
