@@ -31,19 +31,21 @@ interface iProps {
 const Info: React.FC<iProps & Props> = (props: iProps & Props) => {
     return (
         <div className={classes.d_flex}>
-            <div className={`${classes.d_flex} ${classes.flex_column}`}>
-                <div>{props.children}</div>
-                <table className={classes.m_auto}>
+            <div className={`${classes.d_flex} ${classes.m_auto}`}>
+                <div className={`${classes.d_flex} ${classes.flex_column}`}>
+                    <div>{props.children}</div>
+                    <table>
+                        <tbody>
+                            {drawing(1, props.matrix.N, infoSide(props.gridMatrix, props.matrix.N))}
+                        </tbody>
+                    </table>
+                </div>
+                <table>
                     <tbody>
-                        {drawing(1, props.matrix.N, infoSide(props.gridMatrix, props.matrix.N))}
+                        {drawing(props.matrix.M, 1, infoHorizon(props.gridMatrix, props.matrix.M))}
                     </tbody>
                 </table>
             </div>
-            <table className={classes.table}>
-                <tbody>
-                    {drawing(props.matrix.M, 1, infoHorizon(props.gridMatrix, props.matrix.M))}
-                </tbody>
-            </table>
         </div>
     )
 }

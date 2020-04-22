@@ -36,6 +36,14 @@ export const ACTION_GRID_MATRIX_COL_UP_START   = 'ACTION_GRID_MATRIX_COL_UP_STAR
 export const ACTION_GRID_MATRIX_COL_UP_SUCCESS = 'ACTION_GRID_MATRIX_COL_UP_SUCCESS'
 export const ACTION_GRID_MATRIX_COL_UP_FAILURE = 'ACTION_GRID_MATRIX_COL_UP_FAILURE'
 
+export const ACTION_MATRIX_COL_ACTION_START   = 'ACTION_MATRIX_COL_ACTION_START'
+export const ACTION_MATRIX_COL_ACTION_SUCCESS = 'ACTION_MATRIX_COL_ACTION_SUCCESS'
+export const ACTION_MATRIX_COL_ACTION_FAILURE = 'ACTION_MATRIX_COL_ACTION_FAILURE'
+
+export const ACTION_INIT_MATRIX_COL_ACTION_START   = 'ACTION_INIT_MATRIX_COL_ACTION_START'
+export const ACTION_INIT_MATRIX_COL_ACTION_SUCCESS = 'ACTION_INIT_MATRIX_COL_ACTION_SUCCESS'
+export const ACTION_INIT_MATRIX_COL_ACTION_FAILURE = 'ACTION_INIT_MATRIX_COL_ACTION_FAILURE'
+
 export interface iMAction {
     type: typeof ACTION_M_SUCCESS
     payload: number
@@ -79,4 +87,14 @@ export interface iInitGridMatrixAction {
 export interface iGridMatrixColUpAction {
     type: typeof ACTION_GRID_MATRIX_COL_UP_SUCCESS
     payload: iGridMatrix[]
+}
+
+export interface iMatrixColAction {
+    type: typeof ACTION_GRID_MATRIX_COL_UP_SUCCESS
+    payload: number
+}
+
+export interface iInitMatrixColAction {
+    type: typeof ACTION_GRID_MATRIX_COL_UP_SUCCESS
+    payload: number
 }
