@@ -6,19 +6,22 @@ import { iGridMatrix } from '@/interfaces/iMatrix'
 import {
     actionGridMatrix,
     actionInitGridMatrix,
-    actionGridMatrixColUp
+    actionGridMatrixColUp,
+    actionMatrixColAction
 } from '@/actions/actionMatrix'
-import { getGridMatrix } from '@/selectors'
+import { getGridMatrix, getActionCol } from '@/selectors'
 import { bypass, СreateGrid, drawingGrid } from './drawing'
 
 const mapState = (state: iRootState) => ({
-    gridMatrix: getGridMatrix(state)
+    gridMatrix: getGridMatrix(state),
+    actionCol: getActionCol(state)
 })
 
 const mapDispatch = {
     actionGridMatrix,
     actionInitGridMatrix,
-    actionGridMatrixColUp
+    actionGridMatrixColUp,
+    actionMatrixColAction
 }
 
 const connector = connect(
@@ -48,6 +51,21 @@ const Table: React.FC<iProps & Props> = (props: iProps & Props) => {
         }
 
     }, [props.gridMatrix])
+    useEffect(() => {
+        if (props.actionCol !== 0 && props.actionCol !== null && props.gridMatrix) {
+            const index = (props.actionCol - 1) * props.N
+            let result = 0
+            for (let i = index; i < index + props.N; i++) {
+                result += props.gridMatrix[i].ranNumber
+            }
+            for (let i = index; i < index + props.N; i++) {
+                props.gridMatrix[i].interestNumber = +(props.gridMatrix[i].ranNumber / result * 100).toFixed(1)
+                props.gridMatrix[i].interest = true
+            }
+            //@ts-ignore
+            props.actionMatrixColAction(null)
+        }
+    }, [props.actionCol])
     // When changing col, row do a rewrite of the grid
     useEffect(() => {
         if (props.gridMatrix !== undefined) {

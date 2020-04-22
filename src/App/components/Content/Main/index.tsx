@@ -9,7 +9,9 @@ import Info from '@/components/Info'
 
 import iRootState from '@/interfaces/iRootState'
 import { iMatrix } from '@/interfaces/iMatrix'
-import { getMatrix } from '@/selectors'
+import {
+    getMatrix
+} from '@/selectors'
 import {
     actionM,
     actionN,

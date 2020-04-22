@@ -240,7 +240,6 @@ export const actionMatrixColAction = (value: number) => async (dispatch: Dispatc
     dispatch({ type: ACTION_MATRIX_COL_ACTION_START })
 
     try {
-        localStorage.setItem('ColAction', JSON.stringify(value))
         dispatch({
             type: ACTION_MATRIX_COL_ACTION_SUCCESS,
             payload: value,

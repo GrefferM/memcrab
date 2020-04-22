@@ -343,17 +343,24 @@ export const СreateGrid = (M: number, N: number) => {
     const grid: iGridMatrix[] = []
     for (let i = 0; i < M; i++) {
         for (let j = 0; j < N; j++) {
-            grid.push({ id: index++, ranNumber: randomNumber(100, 1000), active: false })
+            grid.push({ id: index++, ranNumber: randomNumber(100, 1000), active: false, interest: false, interestNumber: 0 })
         }
     }
     return grid
+}
+const styleInterestCol = (interest: number) => {
+    return { background: `linear-gradient(0deg, rgba(151,235,173,1) ${interest}%, rgba(232,244,253,1) ${interest}%)` }
 }
 const Col = (count: number, index: number, gridState: iGridMatrix[], handle: Function) => {
     try {
         const type = new Set<JSX.Element>()
         for (let j = 0; j < count; j++) {
             //@ts-ignore
-            type.add(<td id={`col#${gridState[index].id}`} onClick={handle} key={j} className={`${classes.col} ${gridState[index].active && classes.active}`}>{gridState[index].ranNumber}</td>)
+            type.add(<td id={`col#${gridState[index].id}`} onClick={handle} key={j} style={gridState[index].interest ? styleInterestCol(gridState[index].interestNumber) : {}} className={`${classes.col} ${gridState[index].active && classes.active}`}>
+                {
+                    gridState[index].interest ? gridState[index].interestNumber : gridState[index].ranNumber
+                }
+            </td>)
             index++
         }
         return type

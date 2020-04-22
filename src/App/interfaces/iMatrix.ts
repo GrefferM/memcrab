@@ -8,4 +8,6 @@ export interface iGridMatrix {
     id: number
     ranNumber: number
     active: boolean
+    interest: boolean
+    interestNumber: number
 }

@@ -3,3 +3,4 @@ import { iMatrix, iGridMatrix } from '@/interfaces/iMatrix'
 
 export const getMatrix = (state: iRootState):iMatrix => state.Matrix
 export const getGridMatrix = (state: iRootState):iGridMatrix[] => state.GridMatrix.grid
+export const getActionCol = (state: iRootState):number => state.ActionCol

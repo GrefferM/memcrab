@@ -33,21 +33,22 @@ export const infoSide = (grid: iGridMatrix[], step: number) => {
     }
     return sum
 }
-const Col = (count: number, index: number, grid: number[]) => {
+const Col = (id: string, count: number, index: number, grid: number[], handleMouseOver?: Function, handleMouseLeave?: Function) => {
     try {
         const type = new Set<JSX.Element>()
         for (let j = 0; j < count; j++) {
-            type.add(<td key={j} className={classes.col}>{grid[index]}</td>)
+            //@ts-ignore
+            type.add(<td id={`${id}${index + 1}`} onMouseOver={handleMouseOver} onMouseOut={handleMouseLeave} key={j} className={classes.col}>{grid[index]}</td>)
             index++
         }
         return type
     } catch (error) { }
 }
-export const drawing = (M: number, N: number, grid: number[]) => {
+export const drawing = (id: string, M: number, N: number, grid: number[], handleMouseOver?: Function, handleMouseLeave?: Function) => {
     let index = 0
     const type = new Set<JSX.Element>()
     for (let i = 0; i < M; i++) {
-        type.add(<tr key={i}>{Col(N, index, grid)}</tr>)
+        type.add(<tr key={i}>{Col(id, N, index, grid, handleMouseOver, handleMouseLeave)}</tr>)
         index += N
     }
 
