@@ -3,7 +3,6 @@ import { iGridMatrix } from '@/interfaces/iMatrix'
 
 import classes from './index.module.scss'
 
-
 export const infoClose = (length: number, handleMouseClick?: Function) => {
     const type = new Set<JSX.Element>()
     for (let i = 0; i < length; i++) {
