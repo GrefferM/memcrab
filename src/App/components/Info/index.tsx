@@ -3,13 +3,17 @@ import { connect, ConnectedProps } from 'react-redux'
 
 import iRootState from '@/interfaces/iRootState'
 import { iGridMatrix } from '@/interfaces/iMatrix'
-import { actionMatrixColAction } from '@/actions/actionMatrix'
+import {
+    actionMatrixColAction,
+    actionGridMatrix,
+    actionM
+} from '@/actions/actionMatrix'
 import {
     getGridMatrix,
     getMatrix
 } from '@/selectors'
 
-import { infoSide, infoHorizont, drawing } from './drawing'
+import { infoSide, infoHorizont, drawing, infoClose } from './drawing'
 import classes from './index.module.scss'
 
 const mapState = (state: iRootState) => ({
@@ -17,7 +21,9 @@ const mapState = (state: iRootState) => ({
     matrix: getMatrix(state)
 })
 const mapDispatch = {
-    actionMatrixColAction
+    actionMatrixColAction,
+    actionGridMatrix,
+    actionM
 }
 
 const connector = connect(
@@ -48,39 +54,45 @@ const Info: React.FC<iProps & Props> = (props: iProps & Props) => {
             props.actionMatrixColAction(0)
         }
     }
+    const handleMouseClick = (event: MouseEvent) => {
+        //@ts-ignore
+        const id = parseInt(event?.target.id.replace(/\D/g, ''))
+        if (props.gridMatrix) {
+            const start = (id - 1) * props.matrix.N
+            const grid: iGridMatrix[] = props.gridMatrix.slice(0, start).concat(props.gridMatrix.slice(start + props.matrix.N))
+            for(let i = 0; i < grid.length; i++){
+                grid[i].id = i + 1
+            }
+            props.actionGridMatrix(grid)
+            props.actionM(props.matrix.M - 1)
+        }
+    }
 
     useEffect(() => {
         setGrid(props.gridMatrix)
     }, [props.gridMatrix])
 
-    interface iPropsInfo {
-        grid: iGridMatrix[] | undefined
-        M: number
-        N: number
-    }
-    const InfoSideTable: React.FC<iPropsInfo> = (props: iPropsInfo) => (
-        <table>
-            <tbody>
-                {drawing('info_horizon#', props.M, 1, infoSide(props.grid, props.M), handleMouseOver, handleMouseLeave)}
-            </tbody>
-        </table>
-    )
-    const InfoHorizontTable: React.FC<iPropsInfo> = (props: iPropsInfo) => (
-        <table>
-            <tbody>
-                {drawing('info_side#', 1, props.N, infoHorizont(props.grid, props.N))}
-            </tbody>
-        </table>
-    )
-
     return (
         <div className={classes.d_flex}>
             <div className={`${classes.d_flex} ${classes.m_auto}`}>
+                <table>
+                    <tbody>
+                        {props.children && infoClose(props.matrix.M, handleMouseClick)}
+                    </tbody>
+                </table>
                 <div className={`${classes.d_flex} ${classes.flex_column}`}>
                     <div>{props.children}</div>
-                    {props.children && <InfoHorizontTable grid={grid} M={props.matrix.M} N={props.matrix.N} />}
+                    <table>
+                        <tbody>
+                            {props.children && drawing('info_side#', 1, props.matrix.N, infoHorizont(props.gridMatrix, props.matrix.N))}
+                        </tbody>
+                    </table>
                 </div>
-                {props.children && <InfoSideTable grid={grid} M={props.matrix.M} N={props.matrix.N} />}
+                <table>
+                    <tbody>
+                        {props.children && drawing('info_horizon#', props.matrix.M, 1, infoSide(props.gridMatrix, props.matrix.M), handleMouseOver, handleMouseLeave)}
+                    </tbody>
+                </table>
             </div>
         </div>
     )
